@@ -519,7 +519,7 @@ const SEED_LIFTERS = [
 ];
 
 const MEET_KEY = "dudes_dad_meet_v3";
-
+const WARMUP_ROUND_KG = 2.5; // hard rule: warmups always loadable
 /* Warmups: based on 2024 */
 const WARMUP_PLAN = [
   { pct: 0.40, reps: "5 reps" },
@@ -650,15 +650,16 @@ function liftKeyOrder(){ return ["bench","deadlift","squat"]; } // matches your 
 
 function renderWarmups(prevKg){
   const barKg = Number(el("#barWeight").value || 20);
-  const roundStep = Number(el("#roundTo").value || 0.25);
+  const roundStep = WARMUP_ROUND_KG; // ✅ force 2.5kg rounding
 
   return WARMUP_PLAN.map(w=>{
     const kg = roundToStep(prevKg * w.pct, roundStep);
     const lbs = fmtLbs(kgToLbs(kg));
     const bd = plateBreakdown(kg, barKg);
+
     const plateLine = bd.ok
       ? `${formatPlates(bd.perSide)} <small>(bar ${fmtKg(barKg)}kg)</small>`
-      : bd.msg;
+      : `<span class="muted">${bd.msg}</span>`;
 
     return `
       <div class="wItem">
@@ -1044,13 +1045,7 @@ function syncAll(){
     saveState(st);
     renderAccordion();
   });
-  el("#roundTo").addEventListener("input", ()=>{
-    const st = loadState();
-    st.__roundTo = Number(el("#roundTo").value || 0.25);
-    saveState(st);
-    renderAccordion();
-  });
-
+ 
   // Reset buttons
   el("#resetMine").addEventListener("click", resetMine);
   el("#resetAll").addEventListener("click", resetAll);
