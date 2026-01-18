@@ -6,208 +6,1061 @@
   <title>Dudes & Dad Powerlifting Night</title>
   <style>
     :root{
-      --bg:#0b0f17;
-      --surface:#111a2b;
-      --surface2:#0d1422;
-      --line:#22314a;
-      --text:#eaf0ff;
-      --muted:#9fb0c8;
-      --accent:#7dd3fc;
-      --good:#34d399;
-      --bad:#fb7185;
-
-      --radius:14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.28);
+      --bg:#f6f6f5;
+      --card:#ffffff;
+      --text:#1f2328;
+      --muted:#6b7280;
+      --line:#e6e6e4;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --accent:#2563eb;
+      --good:#16a34a;
+      --bad:#dc2626;
+      --pill:#f3f4f6;
+      --chip:#f9fafb;
+      --focus: 0 0 0 4px rgba(37,99,235,.18);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
-      background: radial-gradient(1200px 500px at 50% 0%, rgba(125,211,252,.10), transparent 60%),
-                  linear-gradient(180deg,#070a10,#0b0f17 40%,#070a10);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--text);
+      background:var(--bg);
     }
+    a{color:var(--accent); text-decoration:none}
     .app{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 14px 28px;
     }
 
-    /* Top bar */
+    /* Top app bar */
     .topbar{
-      position:sticky; top:0; z-index:50;
-      height:56px;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 12px;
-      border-bottom:1px solid var(--line);
-      background:rgba(11,15,23,.92);
+      position:sticky; top:0; z-index:30;
+      background: rgba(246,246,245,.86);
       backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    .topbar .left, .topbar .right{display:flex; align-items:center; gap:10px;}
-    .topbar .title{
-      font-weight:900;
-      letter-spacing:.2px;
+    .topbar-inner{
+      max-width:820px;
+      margin:0 auto;
+      padding: 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .brand h1{
       font-size:15px;
-      opacity:.95;
-      user-select:none;
+      margin:0;
+      font-weight:750;
+      letter-spacing:-0.01em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .iconBtn{
-      width:40px; height:40px;
-      border-radius:12px;
+    .iconbtn{
       border:1px solid var(--line);
-      background:rgba(17,26,43,.7);
-      color:var(--text);
-      display:grid; place-items:center;
+      background: var(--card);
+      border-radius: 12px;
+      height: 38px;
+      min-width: 38px;
+      padding: 0 10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       cursor:pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
     }
-    .iconBtn:active{transform: translateY(1px);}
+    .iconbtn:focus{outline:none; box-shadow: var(--focus);}
     .hamburger{
-      width:18px; height:12px; position:relative;
+      width:16px; height:12px; position:relative;
     }
     .hamburger span{
-      position:absolute; left:0; right:0;
-      height:2px; background:var(--text); border-radius:99px;
-      opacity:.9;
+      position:absolute; left:0; right:0; height:2px; border-radius:2px;
+      background:#111827;
     }
     .hamburger span:nth-child(1){top:0}
-    .hamburger span:nth-child(2){top:5px; opacity:.75}
-    .hamburger span:nth-child(3){top:10px}
+    .hamburger span:nth-child(2){top:5px; opacity:.85}
+    .hamburger span:nth-child(3){top:10px; opacity:.7}
 
+    .userchip{
+      display:flex; align-items:center; gap:8px;
+      min-width: 0;
+    }
     .avatar{
-      width:40px; height:40px;
-      border-radius:999px;
+      width:26px; height:26px; border-radius: 999px;
+      background: var(--pill);
       border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(125,211,252,.16), rgba(17,26,43,.7));
-      color:var(--text);
-      font-weight:900;
-      display:grid; place-items:center;
-      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:12px;
+      color:#111827;
+      flex:0 0 auto;
     }
-
-    /* Main */
-    .container{
-      width:100%;
-      max-width:560px;   /* phone-friendly */
-      margin:0 auto;
-      padding:14px 12px 30px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .card{
-      background:rgba(17,26,43,.75);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    /* Summary row (User + Total) */
-    .summary{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px;
-      gap:12px;
-    }
-    .summary .who{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:0;
-    }
-    .summary .who .label{font-size:12px; color:var(--muted)}
-    .summary .who .name{
-      font-size:16px;
-      font-weight:900;
+    .userchip .name{
+      font-size:13px;
+      font-weight:700;
+      max-width: 140px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .summary .totalBox{
-      text-align:right;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #2c4366;
-      background:linear-gradient(180deg, rgba(125,211,252,.16), rgba(17,26,43,.55));
-      min-width:160px;
+
+    /* Sticky total bar */
+    .totalbar{
+      position:sticky; top:59px; z-index:20;
+      background: rgba(246,246,245,.86);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    .summary .totalBox .lbs{
-      font-weight:1000;
-      font-size:18px;
-      line-height:1.05;
+    .totalbar-inner{
+      max-width:820px;
+      margin:0 auto;
+      padding: 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
-    .summary .totalBox .kg{
+    .totals-left{
+      min-width:0;
+    }
+    .totals-left .who{
+      font-size:12px; color:var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .totals-left .big{
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:-0.02em;
+    }
+    .totals-left .small{
+      margin-top:2px;
       font-size:12px;
       color:var(--muted);
-      margin-top:3px;
+    }
+    .totals-actions{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 9px 10px;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .btn:focus{outline:none; box-shadow: var(--focus);}
+
+    /* Cards / sections */
+    .section{
+      margin-top: 14px;
+    }
+    .card{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
     }
 
-    /* Lift accordion list */
-    .liftList{display:flex; flex-direction:column; gap:10px;}
+    /* Accordion (details) */
     details.lift{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:rgba(13,20,34,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
+      border-bottom:1px solid var(--line);
     }
-    details.lift > summary{
+    details.lift:last-child{border-bottom:none}
+    summary.lift-summary{
       list-style:none;
       cursor:pointer;
-      padding:12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
+      padding: 14px 14px;
       gap:12px;
-      background:rgba(17,26,43,.65);
     }
-    details.lift > summary::-webkit-details-marker{display:none}
-
-    .liftHeadLeft{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
+    summary.lift-summary::-webkit-details-marker{display:none}
+    .lift-left{
+      display:flex; flex-direction:column; gap:3px;
       min-width:0;
     }
-    .liftName{
-      font-weight:1000;
-      font-size:16px;
+    .lift-title{
+      font-size:15px;
+      font-weight:850;
+      letter-spacing:-0.01em;
     }
-    .liftSub{
+    .lift-sub{
       font-size:12px;
       color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-
-    .liftHeadRight{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-shrink:0;
+    .lift-right{
+      display:flex; align-items:center; gap:10px; flex:0 0 auto;
     }
-    .valueBadge{
+    .metric{
       text-align:right;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:8px 10px;
-      background:rgba(10,16,28,.6);
-      min-width:120px;
     }
-    .valueBadge .lbs{
-      font-weight:1000;
-      font-size:16px;
-      line-height:1.05;
+    .metric .lbs{
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:-0.01em;
     }
-    .valueBadge .kg{
-      font-size:12px;
+    .metric .kg{
+      font-size:11px;
       color:var(--muted);
-      margin-top:2px;
+      margin-top:1px;
     }
     .chev{
-      width:10px; height:10px;
-      border-right:2px solid var(--muted);
-      border-botto
+      width: 10px; height:10px;
+      border-right:2px solid #111827;
+      border-bottom:2px solid #111827;
+      transform: rotate(-45deg);
+      opacity:.55;
+      margin-top: -2px;
+    }
+    details[open] .chev{ transform: rotate(45deg); opacity:.75; margin-top:2px; }
+
+    .lift-body{
+      padding: 0 14px 14px;
+      display:grid;
+      gap:12px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+    }
+    .field{flex:1; min-width: 220px;}
+    label{
+      display:block;
+      font-size:12px;
+      color: var(--muted);
+      margin-bottom:6px;
+      font-weight:650;
+    }
+    input, select{
+      width:100%;
+      border:1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-size: 15px;
+      outline:none;
+    }
+    input:focus, select:focus{ box-shadow: var(--focus); border-color: rgba(37,99,235,.55); }
+
+    .primaryInput{
+      font-size:18px;
+      font-weight:850;
+      letter-spacing:-0.01em;
+      padding: 14px 12px;
+    }
+
+    .inline{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .delta.good{color:var(--good); font-weight:900}
+    .delta.bad{color:var(--bad); font-weight:900}
+    .delta.neutral{color:var(--muted); font-weight:900}
+
+    .warmups{
+      border:1px solid var(--line);
+      background: var(--chip);
+      border-radius: 14px;
+      padding: 10px;
+      display:grid;
+      gap:8px;
+    }
+    .wItem{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding:10px 10px;
+      display:grid;
+      gap:6px;
+    }
+    .wTop{
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .wTop .left{font-weight:900}
+    .wTop .right{color:var(--muted); font-size:12px; font-weight:700}
+    .plates{
+      font-size:13px;
+      color:#111827;
+    }
+    .plates small{color:var(--muted)}
+    .muted{color:var(--muted)}
+    .tinybtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius: 10px;
+      padding:7px 9px;
+      font-weight:800;
+      font-size:12px;
+      cursor:pointer;
+    }
+
+    /* Drawer */
+    .backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.35);
+      display:none;
+      z-index:50;
+    }
+    .backdrop.show{display:block}
+    .drawer{
+      position:fixed; top:0; left:0; bottom:0;
+      width:min(360px, 92vw);
+      background:#fff;
+      border-right:1px solid var(--line);
+      box-shadow: 20px 0 40px rgba(0,0,0,.18);
+      transform: translateX(-102%);
+      transition: transform .18s ease;
+      z-index:60;
+      display:flex;
+      flex-direction:column;
+    }
+    .drawer.show{transform: translateX(0)}
+    .drawer-head{
+      padding: 12px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .drawer-title{font-weight:900; letter-spacing:-0.01em}
+    .drawer-body{
+      padding: 12px;
+      overflow:auto;
+      display:grid;
+      gap:14px;
+    }
+    .writeup{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: var(--chip);
+    }
+    .writeup h3{margin:0 0 6px; font-size:13px; font-weight:900}
+    .writeup p{margin:0; color:#111827; font-size:13px; line-height:1.35}
+    .divider{height:1px; background:var(--line); margin:2px 0}
+    table{width:100%; border-collapse:collapse; font-size:13px}
+    th,td{padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top}
+    th{color:var(--muted); text-align:left; font-size:12px; letter-spacing:.02em; text-transform:uppercase}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
+
+    /* Modal */
+    .modalwrap{
+      position:fixed; inset:0; z-index:80;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .modalwrap.show{display:flex}
+    .modal{
+      width:min(520px, 96vw);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 30px 70px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .modal-head{
+      padding: 12px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .modal-head h2{margin:0; font-size:14px; font-weight:950}
+    .modal-body{padding: 12px; display:grid; gap:10px}
+    .pick{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      background:#fff;
+    }
+    .pick:hover{background: var(--chip)}
+    .pick .left{display:flex; align-items:center; gap:10px; min-width:0}
+    .pick .nm{font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .pick .sub{font-size:12px; color:var(--muted)}
+  </style>
+</head>
+<body>
+
+<!-- Drawer -->
+<div class="backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="drawer-title">Meet Menu</div>
+    <button class="iconbtn" id="closeDrawer" aria-label="Close menu">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="writeup" id="writeups">
+      <h3>Rules / Write-ups</h3>
+      <p><b>Unlimited attempts</b>. Enter your best successful lift for each movement.</p>
+      <p class="hint">Edit this section in <span class="mono">index.html</span> (search for <span class="mono">Rules / Write-ups</span>).</p>
+    </div>
+
+    <div class="writeup">
+      <h3>Plate colors</h3>
+      <p>red 55kg • blue 20kg • yellow 15kg • green 10kg • white 5kg • black 2.5kg • silver 1.25kg • + 0.5kg & 0.25kg</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="writeup">
+      <h3>Leaderboard</h3>
+      <div class="hint">Ranks by total. Δ% compares “Tonight best” vs 2024.</div>
+      <div style="overflow:auto; margin-top:10px;">
+        <table id="boardTable"></table>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="writeup">
+      <h3>Settings</h3>
+      <div class="row">
+        <div class="field">
+          <label for="barWeight">Bar weight (kg)</label>
+          <input id="barWeight" type="number" step="0.25" min="0" value="20"/>
+        </div>
+        <div class="field">
+          <label for="roundTo">Round warmups to (kg)</label>
+          <input id="roundTo" type="number" step="0.25" min="0.25" value="0.25"/>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="resetMine">Reset my entries</button>
+        <button class="btn" id="resetAll">Reset ALL device entries</button>
+      </div>
+      <div class="hint">This app stores values on this device using <span class="mono">localStorage</span>.</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Top bars -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <button class="iconbtn" id="openDrawer" aria-label="Open menu">
+        <div class="hamburger" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+      <h1>Dudes & Dad Powerlifting Night</h1>
+    </div>
+    <button class="iconbtn" id="openUser" aria-label="Choose lifter">
+      <div class="userchip">
+        <div class="avatar" id="avatar">T</div>
+        <div class="name" id="userNameChip">Thomas</div>
+      </div>
+    </button>
+  </div>
+</header>
+
+<div class="totalbar">
+  <div class="totalbar-inner">
+    <div class="totals-left">
+      <div class="who" id="whoLine">Thomas — Current total</div>
+      <div class="big" id="totalLbs">0 lbs</div>
+      <div class="small" id="totalKg">(0 kg)</div>
+    </div>
+    <div class="totals-actions">
+      <button class="btn" id="jumpBench">Bench</button>
+      <button class="btn" id="jumpDead">Deadlift</button>
+      <button class="btn" id="jumpSquat">Squat</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="section card" id="liftsCard">
+    <!-- accordion injected here -->
+  </div>
+</div>
+
+<!-- User picker modal -->
+<div class="modalwrap" id="userModalWrap" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Choose lifter</h2>
+      <button class="iconbtn" id="closeUser">✕</button>
+    </div>
+    <div class="modal-body" id="userList"></div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   SEED DATA (KG)
+   prev = 2024 best (warmups + delta baseline)
+   base = 2025 best (prefills tonight best initially)
+   ========================= */
+const SEED_LIFTERS = [
+  { id:"thomas",  name:"Thomas",  prev:{squat:192.75, bench:138.25, deadlift:188.25}, base:{squat:201.75, bench:142.75, deadlift:206.25} },
+  { id:"mark",    name:"Mark",    prev:{squat:143.00, bench:129.25, deadlift:183.75}, base:{squat:158.75, bench:142.75, deadlift:197.25} },
+  { id:"david",   name:"David",   prev:{squat:165.50, bench:120.25, deadlift:152.00}, base:{squat:174.50, bench:122.50, deadlift:172.25} },
+  { id:"sean",    name:"Sean",    prev:{squat:165.50, bench:129.25, deadlift:156.50}, base:{squat:183.75, bench:136.25, deadlift:183.75} },
+  { id:"athneil", name:"Athneil", prev:{squat:113.50, bench: 79.50, deadlift:143.00}, base:{squat:129.25, bench: 90.75, deadlift:161.00} },
+  { id:"neil",    name:"Neil",    prev:{squat:129.25, bench:133.75, deadlift:152.00}, base:{squat:147.50, bench:124.75, deadlift:172.25} },
+  { id:"dani",    name:"Dani",    prev:{squat:127.00, bench:122.50, deadlift:147.50}, base:{squat:170.00, bench:142.75, deadlift:206.25} },
+  { id:"michael", name:"Michael", prev:{squat:124.75, bench:124.75, deadlift:183.75}, base:{squat:124.75, bench:115.75, deadlift:192.75} },
+  { id:"rob",     name:"Rob",     prev:{squat:null, bench:null, deadlift:null},       base:{squat:null, bench:null, deadlift:null} },
+  { id:"isaias",  name:"Isaias",  prev:{squat:null, bench:null, deadlift:null},       base:{squat:null, bench:null, deadlift:null} },
+];
+
+const MEET_KEY = "dudes_dad_meet_v3";
+
+/* Warmups: based on 2024 */
+const WARMUP_PLAN = [
+  { pct: 0.40, reps: "5 reps" },
+  { pct: 0.55, reps: "3 reps" },
+  { pct: 0.70, reps: "2 reps" },
+  { pct: 0.80, reps: "1 rep"  },
+  { pct: 0.90, reps: "1 rep"  },
+  { pct: 0.95, reps: "1 rep (opener)" },
+];
+
+/* Plates */
+const PLATES = [
+  { color: "red",   kg: 55 },
+  { color: "blue",  kg: 20 },
+  { color: "yellow",kg: 15 },
+  { color: "green", kg: 10 },
+  { color: "white", kg: 5  },
+  { color: "black", kg: 2.5},
+  { color: "silver",kg: 1.25},
+  { color: "0.5kg", kg: 0.5},
+  { color: "0.25kg",kg: 0.25},
+].sort((a,b)=>b.kg-a.kg);
+
+const el = (s)=>document.querySelector(s);
+
+/* Units */
+function kgToLbs(kg){ return kg * 2.2046226218; }
+function fmtKg(kg){
+  const v = Math.round(kg*100)/100;
+  return (Number.isInteger(v) ? v.toString() : v.toFixed(2).replace(/0+$/,'').replace(/\.$/,''));
+}
+function fmtLbs(lbs){ return Math.round(lbs).toString(); }
+function roundToStep(value, step){
+  const inv = 1/step;
+  return Math.round(value*inv)/inv;
+}
+
+/* Storage */
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(MEET_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveState(st){ localStorage.setItem(MEET_KEY, JSON.stringify(st)); }
+function getLifterState(state, id){
+  if(!state[id]) state[id] = { best:{squat:null, bench:null, deadlift:null}, override:{prev:{}, base:{}} };
+  const s = state[id];
+  s.best = s.best || {squat:null, bench:null, deadlift:null};
+  s.override = s.override || {prev:{}, base:{}};
+  s.override.prev = s.override.prev || {};
+  s.override.base = s.override.base || {};
+  return s;
+}
+function numOrNull(v){
+  if(v == null || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+function getPrevKg(lifter, liftKey, state){
+  const seeded = lifter.prev?.[liftKey];
+  if(seeded != null && Number(seeded) > 0) return Number(seeded);
+  const ls = getLifterState(state, lifter.id);
+  const ov = numOrNull(ls.override.prev[liftKey]);
+  if(ov != null && ov > 0) return ov;
+  return null;
+}
+function getBaseKg(lifter, liftKey, state){
+  const seeded = lifter.base?.[liftKey];
+  if(seeded != null && Number(seeded) > 0) return Number(seeded);
+  const ls = getLifterState(state, lifter.id);
+  const ov = numOrNull(ls.override.base[liftKey]);
+  if(ov != null && ov > 0) return ov;
+  return null;
+}
+function pctDelta(currentKg, prevKg){
+  if(currentKg == null || currentKg === "" || Number.isNaN(Number(currentKg))) return null;
+  const cur = Number(currentKg);
+  const prev = Number(prevKg);
+  if(!prev) return null;
+  return ((cur - prev) / prev) * 100;
+}
+function deltaClass(d){
+  if(d == null) return "neutral";
+  if(d > 0.00001) return "good";
+  if(d < -0.00001) return "bad";
+  return "neutral";
+}
+function deltaText(d){
+  if(d == null) return "—";
+  const sign = d > 0 ? "+" : "";
+  return sign + d.toFixed(1) + "%";
+}
+
+/* Plates math (per side) */
+function plateBreakdown(targetKg, barKg){
+  const loadKg = targetKg - barKg;
+  if(loadKg < 0) return { ok:false, msg:`Target (${fmtKg(targetKg)}kg) < bar (${fmtKg(barKg)}kg).`, perSide:[] };
+  const perSide = loadKg / 2;
+  if(perSide < 0.00001) return { ok:true, msg:`Empty bar (${fmtKg(barKg)}kg).`, perSide:[] };
+
+  let remaining = Math.round(perSide * 100) / 100;
+  const chosen = [];
+  for(const p of PLATES){
+    let count = 0;
+    while(remaining + 1e-9 >= p.kg){
+      remaining = Math.round((remaining - p.kg) * 100) / 100;
+      count++;
+      if(count > 1000) break;
+    }
+    if(count>0) chosen.push({ ...p, count });
+  }
+  const ok = Math.abs(remaining) < 0.001;
+  return { ok, remainder: remaining, perSide: chosen };
+}
+function formatPlates(perSideList){
+  if(!perSideList.length) return `Use the bar only.`;
+  const parts = perSideList.map(it => `${it.count} ${it.color} (${fmtKg(it.kg)}kg)`);
+  return `Per side: ${parts.join(" + ")}`;
+}
+
+/* UI helpers */
+function liftLabel(k){
+  if(k==="bench") return "Bench Press";
+  if(k==="deadlift") return "Deadlift";
+  if(k==="squat") return "Squat";
+  return k;
+}
+function liftKeyOrder(){ return ["bench","deadlift","squat"]; } // matches your blueprint stack
+
+function renderWarmups(prevKg){
+  const barKg = Number(el("#barWeight").value || 20);
+  const roundStep = Number(el("#roundTo").value || 0.25);
+
+  return WARMUP_PLAN.map(w=>{
+    const kg = roundToStep(prevKg * w.pct, roundStep);
+    const lbs = fmtLbs(kgToLbs(kg));
+    const bd = plateBreakdown(kg, barKg);
+    const plateLine = bd.ok
+      ? `${formatPlates(bd.perSide)} <small>(bar ${fmtKg(barKg)}kg)</small>`
+      : bd.msg;
+
+    return `
+      <div class="wItem">
+        <div class="wTop">
+          <div class="left">${Math.round(w.pct*100)}% • ${fmtKg(kg)}kg <span class="muted">(${lbs}lbs)</span></div>
+          <div class="right">${w.reps}</div>
+        </div>
+        <div class="plates">${plateLine}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function currentBestKg(lifter, liftKey, state){
+  const ls = getLifterState(state, lifter.id);
+  // If they've set a "best tonight", use it; else fall back to seeded/base
+  return (ls.best[liftKey] != null) ? ls.best[liftKey] : getBaseKg(lifter, liftKey, state);
+}
+
+function renderLiftDetails(lifter, liftKey, state){
+  const prevKg = getPrevKg(lifter, liftKey, state);
+  const baseKg = getBaseKg(lifter, liftKey, state);
+  const curKg  = currentBestKg(lifter, liftKey, state);
+
+  const prevLine = (prevKg != null)
+    ? `2024 best: <b>${fmtLbs(kgToLbs(prevKg))}lbs</b> <span class="muted">(${fmtKg(prevKg)}kg)</span>`
+    : `2024 best: <b>Unknown</b> <span class="muted">(enter below for warmups)</span>`;
+
+  const d = (prevKg != null && curKg != null) ? pctDelta(curKg, prevKg) : null;
+
+  const warmupsBlock = (prevKg != null)
+    ? `<div class="warmups">${renderWarmups(prevKg)}</div>`
+    : `<div class="warmups"><div class="wItem"><div class="muted">Enter a 2024 best to generate warmups.</div></div></div>`;
+
+  return `
+    <div class="lift-body">
+      <div class="row">
+        <div class="field">
+          <label>Tonight best (kg)</label>
+          <input class="primaryInput" id="best-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal"
+            value="${curKg ?? ""}" placeholder="e.g. 180" />
+          <div class="inline" style="margin-top:8px;">
+            <div>${prevLine}</div>
+            <div>Δ% <span class="delta ${deltaClass(d)}">${deltaText(d)}</span></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tonight best (lbs)</label>
+          <input id="bestlbs-${liftKey}" type="text" readonly value="${curKg ? (fmtLbs(kgToLbs(curKg)) + " lbs") : ""}" />
+          <div class="hint">Auto from kg.</div>
+        </div>
+      </div>
+
+      <div>
+        <label>Suggested warmups (based on 2024)</label>
+        ${warmupsBlock}
+      </div>
+
+      <details class="card" style="padding:10px; border-radius:14px; box-shadow:none;">
+        <summary class="lift-summary" style="padding:0; align-items:center;">
+          <div class="lift-left">
+            <div class="lift-title" style="font-size:13px;">Edit 2024 / 2025 numbers</div>
+            <div class="lift-sub">Only use this if the seeded numbers are wrong / missing.</div>
+          </div>
+          <div class="chev" aria-hidden="true"></div>
+        </summary>
+        <div class="lift-body" style="padding:12px 0 0;">
+          <div class="row">
+            <div class="field">
+              <label>2024 best (kg)</label>
+              <input id="prev-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal" value="${prevKg ?? ""}" placeholder="e.g. 170" />
+            </div>
+            <div class="field">
+              <label>2025 best (kg) — starting point</label>
+              <input id="base-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal" value="${baseKg ?? ""}" placeholder="e.g. 180" />
+              <div class="hint">Used only to prefill tonight best if you haven’t entered one yet.</div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  `;
+}
+
+function renderAccordion(){
+  const state = loadState();
+  const lifter = getCurrentLifter();
+  const card = el("#liftsCard");
+
+  card.innerHTML = liftKeyOrder().map(k=>{
+    const curKg = currentBestKg(lifter, k, state);
+    const curLbs = (curKg != null) ? fmtLbs(kgToLbs(curKg)) : "—";
+    const curKgTxt = (curKg != null) ? fmtKg(curKg) : "—";
+
+    const prevKg = getPrevKg(lifter, k, state);
+    const prevTxt = (prevKg != null)
+      ? `2024: ${fmtLbs(kgToLbs(prevKg))}lbs (${fmtKg(prevKg)}kg)`
+      : `2024: unknown`;
+
+    // All collapsed initially => no "open" attribute
+    return `
+      <details class="lift" id="lift-${k}">
+        <summary class="lift-summary">
+          <div class="lift-left">
+            <div class="lift-title">${liftLabel(k)}</div>
+            <div class="lift-sub">${prevTxt}</div>
+          </div>
+          <div class="lift-right">
+            <div class="metric">
+              <div class="lbs">${curLbs} lbs</div>
+              <div class="kg">${curKgTxt} kg</div>
+            </div>
+            <div class="chev" aria-hidden="true"></div>
+          </div>
+        </summary>
+        ${renderLiftDetails(lifter, k, state)}
+      </details>
+    `;
+  }).join("");
+
+  // Hook inputs after render
+  liftKeyOrder().forEach(k=>{
+    const best = el(`#best-${k}`);
+    const prev = el(`#prev-${k}`);
+    const base = el(`#base-${k}`);
+
+    best.addEventListener("input", ()=>{
+      const st = loadState();
+      const l = getCurrentLifter();
+      const ls = getLifterState(st, l.id);
+      ls.best[k] = (best.value === "" ? null : Number(best.value));
+      saveState(st);
+
+      el(`#bestlbs-${k}`).value = (best.value === "" ? "" : (fmtLbs(kgToLbs(Number(best.value))) + " lbs"));
+
+      updateTotals();
+      renderBoard();     // keep leaderboard current
+      refreshSummaryRow(k);
+    });
+
+    prev.addEventListener("input", ()=>{
+      const st = loadState();
+      const l = getCurrentLifter();
+      const ls = getLifterState(st, l.id);
+      ls.override.prev[k] = (prev.value === "" ? null : Number(prev.value));
+      saveState(st);
+      // warmups and delta depend on prev
+      renderAccordion();
+      updateTotals();
+      renderBoard();
+    });
+
+    base.addEventListener("input", ()=>{
+      const st = loadState();
+      const l = getCurrentLifter();
+      const ls = getLifterState(st, l.id);
+      ls.override.base[k] = (base.value === "" ? null : Number(base.value));
+
+      // If best isn't set, keep best aligned to base
+      if(ls.best[k] == null){
+        ls.best[k] = (base.value === "" ? null : Number(base.value));
+      }
+      saveState(st);
+
+      renderAccordion();
+      updateTotals();
+      renderBoard();
+    });
+  });
+}
+
+function refreshSummaryRow(liftKey){
+  // Update the collapsed row numbers without re-rendering everything (fast)
+  const state = loadState();
+  const lifter = getCurrentLifter();
+  const curKg = currentBestKg(lifter, liftKey, state);
+
+  const detail = el(`#lift-${liftKey}`);
+  if(!detail) return;
+
+  const lbsEl = detail.querySelector(".metric .lbs");
+  const kgEl  = detail.querySelector(".metric .kg");
+  if(!lbsEl || !kgEl) return;
+
+  if(curKg == null){
+    lbsEl.textContent = `— lbs`;
+    kgEl.textContent = `— kg`;
+  }else{
+    lbsEl.textContent = `${fmtLbs(kgToLbs(curKg))} lbs`;
+    kgEl.textContent  = `${fmtKg(curKg)} kg`;
+  }
+}
+
+/* Totals */
+function calcTotalKgFor(lifter, state){
+  const ls = getLifterState(state, lifter.id);
+  const s = currentBestKg(lifter, "squat", state);
+  const b = currentBestKg(lifter, "bench", state);
+  const d = currentBestKg(lifter, "deadlift", state);
+  return (Number(s)||0) + (Number(b)||0) + (Number(d)||0);
+}
+function updateTotals(){
+  const st = loadState();
+  const lifter = getCurrentLifter();
+  const totalKg = calcTotalKgFor(lifter, st);
+  el("#whoLine").textContent = `${lifter.name} — Current total`;
+  el("#totalLbs").textContent = `${fmtLbs(kgToLbs(totalKg))} lbs`;
+  el("#totalKg").textContent = `(${fmtKg(totalKg)} kg)`;
+}
+
+/* Leaderboard */
+function renderBoard(){
+  const state = loadState();
+  const rows = SEED_LIFTERS.map(l => {
+    const prevSq = getPrevKg(l, "squat", state);
+    const prevBn = getPrevKg(l, "bench", state);
+    const prevDl = getPrevKg(l, "deadlift", state);
+
+    const curSq = currentBestKg(l, "squat", state);
+    const curBn = currentBestKg(l, "bench", state);
+    const curDl = currentBestKg(l, "deadlift", state);
+
+    const totalKg = (Number(curSq)||0) + (Number(curBn)||0) + (Number(curDl)||0);
+    const totalLbs = fmtLbs(kgToLbs(totalKg));
+
+    const dSq = (prevSq != null && curSq != null) ? pctDelta(curSq, prevSq) : null;
+    const dBn = (prevBn != null && curBn != null) ? pctDelta(curBn, prevBn) : null;
+    const dDl = (prevDl != null && curDl != null) ? pctDelta(curDl, prevDl) : null;
+
+    const prevTotal = (Number(prevSq)||0) + (Number(prevBn)||0) + (Number(prevDl)||0);
+    const dTot = (prevTotal > 0 && totalKg > 0) ? pctDelta(totalKg, prevTotal) : null;
+
+    return { name:l.name, totalKg, totalLbs, curSq, curBn, curDl, dSq,dBn,dDl,dTot };
+  }).sort((a,b)=>b.totalKg - a.totalKg);
+
+  const fmtLift = (kg)=> (kg!=null && Number(kg)>0) ? `${fmtLbs(kgToLbs(kg))}lbs (${fmtKg(kg)}kg)` : "—";
+
+  el("#boardTable").innerHTML = `
+    <thead>
+      <tr>
+        <th style="width:42px;">#</th>
+        <th>Lifter</th>
+        <th>Total</th>
+        <th>Squat</th>
+        <th>Bench</th>
+        <th>Deadlift</th>
+        <th>Overall Δ</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows.map((r,i)=>`
+        <tr>
+          <td><b>${i+1}</b></td>
+          <td><b>${r.name}</b></td>
+          <td>${r.totalKg>0 ? `${r.totalLbs} lbs <span class="muted">(${fmtKg(r.totalKg)}kg)</span>` : "—"}</td>
+          <td>${fmtLift(r.curSq)}<div class="hint">Δ <span class="delta ${deltaClass(r.dSq)}">${deltaText(r.dSq)}</span></div></td>
+          <td>${fmtLift(r.curBn)}<div class="hint">Δ <span class="delta ${deltaClass(r.dBn)}">${deltaText(r.dBn)}</span></div></td>
+          <td>${fmtLift(r.curDl)}<div class="hint">Δ <span class="delta ${deltaClass(r.dDl)}">${deltaText(r.dDl)}</span></div></td>
+          <td><span class="delta ${deltaClass(r.dTot)}">${deltaText(r.dTot)}</span></td>
+        </tr>
+      `).join("")}
+    </tbody>
+  `;
+}
+
+/* Current lifter */
+function getCurrentLifterId(){
+  const st = loadState();
+  return st.__currentLifterId || SEED_LIFTERS[0].id;
+}
+function setCurrentLifterId(id){
+  const st = loadState();
+  st.__currentLifterId = id;
+  saveState(st);
+}
+function getCurrentLifter(){
+  const id = getCurrentLifterId();
+  return SEED_LIFTERS.find(x=>x.id===id) || SEED_LIFTERS[0];
+}
+function updateUserChip(){
+  const lifter = getCurrentLifter();
+  el("#userNameChip").textContent = lifter.name;
+  el("#avatar").textContent = (lifter.name || "?").trim().slice(0,1).toUpperCase();
+}
+
+/* Drawer + modal */
+function openDrawer(){
+  el("#backdrop").classList.add("show");
+  el("#drawer").classList.add("show");
+}
+function closeDrawer(){
+  el("#backdrop").classList.remove("show");
+  el("#drawer").classList.remove("show");
+}
+function openUserModal(){
+  const wrap = el("#userModalWrap");
+  const list = el("#userList");
+  list.innerHTML = SEED_LIFTERS.map(l=>{
+    return `
+      <div class="pick" data-id="${l.id}">
+        <div class="left">
+          <div class="avatar">${l.name.slice(0,1).toUpperCase()}</div>
+          <div style="min-width:0;">
+            <div class="nm">${l.name}</div>
+            <div class="sub">Tap to switch</div>
+          </div>
+        </div>
+        <div class="muted">›</div>
+      </div>
+    `;
+  }).join("");
+
+  list.querySelectorAll(".pick").forEach(p=>{
+    p.addEventListener("click", ()=>{
+      setCurrentLifterId(p.dataset.id);
+      closeUserModal();
+      syncAll();
+    });
+  });
+
+  wrap.classList.add("show");
+}
+function closeUserModal(){
+  el("#userModalWrap").classList.remove("show");
+}
+
+/* Jump buttons */
+function jumpTo(liftKey){
+  const d = el(`#lift-${liftKey}`);
+  if(!d) return;
+  d.scrollIntoView({behavior:"smooth", block:"start"});
+  // Do NOT auto-open; user asked: start collapsed and open/close as they want.
+}
+
+/* Resets */
+function resetMine(){
+  const st = loadState();
+  const lifter = getCurrentLifter();
+  const ls = getLifterState(st, lifter.id);
+  ls.best = {squat:null, bench:null, deadlift:null};
+  saveState(st);
+  syncAll();
+}
+function resetAll(){
+  localStorage.removeItem(MEET_KEY);
+  syncAll();
+}
+
+/* Sync everything */
+function syncAll(){
+  updateUserChip();
+  // sync settings inputs from stored values if present
+  const st = loadState();
+  if(st.__barWeight != null) el("#barWeight").value = st.__barWeight;
+  if(st.__roundTo != null) el("#roundTo").value = st.__roundTo;
+
+  renderAccordion();
+  updateTotals();
+  renderBoard();
+}
+
+/* Init */
+(function init(){
+  // Drawer wiring
+  el("#openDrawer").addEventListener("click", openDrawer);
+  el("#closeDrawer").addEventListener("click", closeDrawer);
+  el("#backdrop").addEventListener("click", ()=>{ closeDrawer(); closeUserModal(); });
+
+  // User modal wiring
+  el("#openUser").addEventListener("click", openUserModal);
+  el("#closeUser").addEventListener("click", closeUserModal);
+  el("#userModalWrap").addEventListener("click", (e)=>{ if(e.target.id==="userModalWrap") closeUserModal(); });
+
+  // Jump buttons
+  el("#jumpBench").addEventListener("click", ()=>jumpTo("bench"));
+  el("#jumpDead").addEventListener("click", ()=>jumpTo("deadlift"));
+  el("#jumpSquat").addEventListener("click", ()=>jumpTo("squat"));
+
+  // Settings persistence
+  el("#barWeight").addEventListener("input", ()=>{
+    const st = loadState();
+    st.__barWeight = Number(el("#barWeight").value || 20);
+    saveState(st);
+    renderAccordion();
+  });
+  el("#roundTo").addEventListener("input", ()=>{
+    const st = loadState();
+    st.__roundTo = Number(el("#roundTo").value || 0.25);
+    saveState(st);
+    renderAccordion();
+  });
+
+  // Reset buttons
+  el("#resetMine").addEventListener("click", resetMine);
+  el("#resetAll").addEventListener("click", resetAll);
+
+  // Ensure there is a current lifter
+  const st = loadState();
+  if(!st.__currentLifterId) { st.__currentLifterId = SEED_LIFTERS[0].id; saveState(st); }
+
+  syncAll();
+})();
+</script>
+</body>
+</html>
