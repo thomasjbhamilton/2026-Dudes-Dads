@@ -1,4 +1,3 @@
-<!-- force rebuild -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,645 +6,208 @@
   <title>Dudes & Dad Powerlifting Night</title>
   <style>
     :root{
-      --bg:#0b0f17; --card:#121a27; --muted:#9fb0c8; --text:#eaf0ff; --accent:#7dd3fc;
-      --good:#34d399; --bad:#fb7185; --line:#233044;
+      --bg:#0b0f17;
+      --surface:#111a2b;
+      --surface2:#0d1422;
+      --line:#22314a;
+      --text:#eaf0ff;
+      --muted:#9fb0c8;
+      --accent:#7dd3fc;
+      --good:#34d399;
+      --bad:#fb7185;
+
+      --radius:14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.28);
     }
     *{box-sizing:border-box}
     body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
-      background:linear-gradient(180deg,#070a10,#0b0f17 35%,#070a10); color:var(--text);
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background: radial-gradient(1200px 500px at 50% 0%, rgba(125,211,252,.10), transparent 60%),
+                  linear-gradient(180deg,#070a10,#0b0f17 40%,#070a10);
+      color:var(--text);
     }
-    header{
-      padding:18px 16px 10px; border-bottom:1px solid var(--line);
-      position:sticky; top:0; background:rgba(11,15,23,.92); backdrop-filter: blur(8px);
-      z-index:10;
+    .app{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
-    .title{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
-    h1{font-size:18px; margin:0}
-    .sub{color:var(--muted); font-size:13px}
-    main{padding:14px 16px 28px; max-width:1100px; margin:0 auto}
-    .tabs{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap}
-    .tabbtn{
-      border:1px solid var(--line); background:transparent; color:var(--text);
-      padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:600;
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      height:56px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 12px;
+      border-bottom:1px solid var(--line);
+      background:rgba(11,15,23,.92);
+      backdrop-filter: blur(10px);
     }
-    .tabbtn.active{background:var(--card); border-color:#2d3f5e}
-    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end}
-    .card{
-      background:rgba(18,26,39,.8);
+    .topbar .left, .topbar .right{display:flex; align-items:center; gap:10px;}
+    .topbar .title{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size:15px;
+      opacity:.95;
+      user-select:none;
+    }
+    .iconBtn{
+      width:40px; height:40px;
+      border-radius:12px;
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+      background:rgba(17,26,43,.7);
+      color:var(--text);
+      display:grid; place-items:center;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
     }
-    .card h2{margin:0 0 8px; font-size:15px}
-    label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
-    select,input{
+    .iconBtn:active{transform: translateY(1px);}
+    .hamburger{
+      width:18px; height:12px; position:relative;
+    }
+    .hamburger span{
+      position:absolute; left:0; right:0;
+      height:2px; background:var(--text); border-radius:99px;
+      opacity:.9;
+    }
+    .hamburger span:nth-child(1){top:0}
+    .hamburger span:nth-child(2){top:5px; opacity:.75}
+    .hamburger span:nth-child(3){top:10px}
+
+    .avatar{
+      width:40px; height:40px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(125,211,252,.16), rgba(17,26,43,.7));
+      color:var(--text);
+      font-weight:900;
+      display:grid; place-items:center;
+      cursor:pointer;
+    }
+
+    /* Main */
+    .container{
       width:100%;
-      padding:10px 10px;
-      border-radius:10px;
-      border:1px solid #2b3a52;
-      background:#0a1220;
-      color:var(--text);
-      outline:none;
+      max-width:560px;   /* phone-friendly */
+      margin:0 auto;
+      padding:14px 12px 30px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
-    input[type="number"]{appearance:textfield}
-    .grid3{display:grid; grid-template-columns:repeat(3, minmax(260px,1fr)); gap:12px}
-    @media (max-width: 900px){ .grid3{grid-template-columns:1fr} }
-    .liftTop{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
-    .pill{
-      font-size:12px; color:var(--muted);
-      border:1px solid var(--line); padding:6px 8px; border-radius:999px;
-      background:rgba(0,0,0,.12);
+
+    .card{
+      background:rgba(17,26,43,.75);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* Summary row (User + Total) */
+    .summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px;
+      gap:12px;
+    }
+    .summary .who{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .summary .who .label{font-size:12px; color:var(--muted)}
+    .summary .who .name{
+      font-size:16px;
+      font-weight:900;
       white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    details{border-top:1px dashed #2a3a54; margin-top:10px; padding-top:10px}
-    summary{cursor:pointer; font-weight:700; color:var(--accent)}
-    .muted{color:var(--muted)}
-    .warmups{margin:10px 0 0; display:grid; gap:8px}
-    .wItem{
-      border:1px solid var(--line); background:rgba(10,18,32,.6);
-      border-radius:12px; padding:10px;
-    }
-    .wLine{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
-    .wLeft{font-weight:700}
-    .wRight{color:var(--muted)}
-    .plates{margin-top:6px; color:#cfe1ff; font-size:13px}
-    .plates small{color:var(--muted)}
-    .totalsBar{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      margin-top:12px;
-    }
-    .bigTotal{
-      font-size:16px; font-weight:900;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid #2d3f5e;
-      background:linear-gradient(180deg,rgba(125,211,252,.18),rgba(18,26,39,.6));
-    }
-    .btn{
-      border:1px solid #2d3f5e;
-      background:rgba(18,26,39,.8);
-      color:var(--text);
+    .summary .totalBox{
+      text-align:right;
       padding:10px 12px;
       border-radius:12px;
+      border:1px solid #2c4366;
+      background:linear-gradient(180deg, rgba(125,211,252,.16), rgba(17,26,43,.55));
+      min-width:160px;
+    }
+    .summary .totalBox .lbs{
+      font-weight:1000;
+      font-size:18px;
+      line-height:1.05;
+    }
+    .summary .totalBox .kg{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:3px;
+    }
+
+    /* Lift accordion list */
+    .liftList{display:flex; flex-direction:column; gap:10px;}
+    details.lift{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(13,20,34,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    details.lift > summary{
+      list-style:none;
       cursor:pointer;
-      font-weight:700;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background:rgba(17,26,43,.65);
     }
-    .btn:hover{border-color:#3a567f}
-    table{width:100%; border-collapse:collapse; font-size:13px}
-    th,td{padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top}
-    th{color:var(--muted); text-align:left; font-size:12px; letter-spacing:.02em; text-transform:uppercase}
-    .delta.good{color:var(--good); font-weight:800}
-    .delta.bad{color:var(--bad); font-weight:800}
-    .delta.neutral{color:var(--muted); font-weight:800}
-    .small{font-size:12px; color:var(--muted)}
-    .note{margin-top:10px; color:var(--muted); font-size:12px}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-  </style>
-</head>
-<body>
-<header>
-  <div class="title">
-    <h1>Dudes & Dad Powerlifting Night</h1>
-    <div class="sub">One-night tracker • unlimited attempts • warmups from 2024 • prefill with 2025 best</div>
-  </div>
-  <div class="tabs">
-    <button class="tabbtn active" data-tab="me">My Lifts</button>
-    <button class="tabbtn" data-tab="board">Leaderboard</button>
-  </div>
-</header>
+    details.lift > summary::-webkit-details-marker{display:none}
 
-<main>
-  <section id="tab-me">
-    <div class="row">
-      <div class="card" style="flex:1; min-width:260px;">
-        <h2>Pick your name</h2>
-        <label for="nameSelect">Lifter</label>
-        <select id="nameSelect"></select>
-        <div class="note">
-          Uses <span class="mono">localStorage</span> so entries persist on this device for the night.
-        </div>
-      </div>
-
-      <div class="card" style="flex:1; min-width:260px;">
-        <h2>Bar / plates settings</h2>
-        <div class="row">
-          <div style="flex:1; min-width:180px;">
-            <label for="barWeight">Bar weight (kg)</label>
-            <input id="barWeight" type="number" step="0.25" min="0" value="20"/>
-          </div>
-          <div style="flex:1; min-width:180px;">
-            <label for="roundTo">Round suggestions to (kg)</label>
-            <input id="roundTo" type="number" step="0.25" min="0.25" value="0.25"/>
-          </div>
-        </div>
-        <div class="note">
-          Plate colors: red 55kg, blue 20kg, yellow 15kg, green 10kg, white 5kg, black 2.5kg, silver 1.25kg, plus 0.5kg & 0.25kg.
-        </div>
-      </div>
-
-      <div class="card" style="flex:1; min-width:260px;">
-        <h2>Total</h2>
-        <div class="totalsBar">
-          <div class="bigTotal" id="totalBox">Total = 0 lbs (0kg)</div>
-          <button class="btn" id="resetMine">Reset my entries</button>
-        </div>
-        <div class="note">
-          Your totals always display as <b>lbs (kg)</b>. Leaderboard ranks by total.
-        </div>
-      </div>
-    </div>
-
-    <div class="grid3" style="margin-top:12px;">
-      <div class="card" id="card-squat"></div>
-      <div class="card" id="card-bench"></div>
-      <div class="card" id="card-deadlift"></div>
-    </div>
-  </section>
-
-  <section id="tab-board" style="display:none;">
-    <div class="card">
-      <div class="liftTop">
-        <h2 style="margin:0;">Leaderboard</h2>
-        <div class="row">
-          <button class="btn" id="refreshBoard">Refresh</button>
-          <button class="btn" id="resetAll">Reset ALL device entries</button>
-        </div>
-      </div>
-      <div class="note">
-        Δ% uses: <span class="mono">(current - 2024) / 2024 * 100</span>. Blank until both numbers exist.
-      </div>
-      <div style="overflow:auto; margin-top:10px;">
-        <table id="boardTable"></table>
-      </div>
-    </div>
-  </section>
-</main>
-
-<script>
-/** =========================================
- *  SEED DATA
- *  - prev = 2024 best (used for warmups + delta baseline)
- *  - base = 2025 best (prefills lifter's starting numbers)
- *  All values stored in KG (rounded to 0.25kg)
- *  ========================================= */
-
-const SEED_LIFTERS = [
-  { id:"thomas",  name:"Thomas",  prev:{squat:192.75, bench:138.25, deadlift:188.25}, base:{squat:201.75, bench:142.75, deadlift:206.25} }, // 425->445, 305->315, 415->455
-  { id:"mark",    name:"Mark",    prev:{squat:143.00, bench:129.25, deadlift:183.75}, base:{squat:158.75, bench:142.75, deadlift:197.25} }, // 315->350, 285->315, 405->435
-  { id:"david",   name:"David",   prev:{squat:165.50, bench:120.25, deadlift:152.00}, base:{squat:174.50, bench:122.50, deadlift:172.25} }, // 365->385, 265->270, 335->380
-  { id:"sean",    name:"Sean",    prev:{squat:165.50, bench:129.25, deadlift:156.50}, base:{squat:183.75, bench:136.25, deadlift:183.75} }, // 365->405, 285->300, 345->405
-  { id:"athneil", name:"Athneil", prev:{squat:113.50, bench: 79.50, deadlift:143.00}, base:{squat:129.25, bench: 90.75, deadlift:161.00} }, // 250->285, 175->200, 315->355
-  { id:"neil",    name:"Neil",    prev:{squat:129.25, bench:133.75, deadlift:152.00}, base:{squat:147.50, bench:124.75, deadlift:172.25} }, // 285->325, 295->275, 335->380
-  { id:"dani",    name:"Dani",    prev:{squat:127.00, bench:122.50, deadlift:147.50}, base:{squat:170.00, bench:142.75, deadlift:206.25} }, // 280->375, 270->315, 325->455
-  { id:"michael", name:"Michael", prev:{squat:124.75, bench:124.75, deadlift:183.75}, base:{squat:124.75, bench:115.75, deadlift:192.75} }, // 275->275, 275->255, 405->425
-
-  // Added (no data: users can enter 2024 + 2025 on device)
-  { id:"rob",     name:"Rob",     prev:{squat:null, bench:null, deadlift:null}, base:{squat:null, bench:null, deadlift:null} },
-  { id:"isaias",  name:"Isaias",  prev:{squat:null, bench:null, deadlift:null}, base:{squat:null, bench:null, deadlift:null} },
-];
-
-const MEET_KEY = "dudes_dad_meet_v2";
-
-/** Warm-up plan (based on 2024 numbers) */
-const WARMUP_PLAN = [
-  { pct: 0.40, reps: "5 reps" },
-  { pct: 0.55, reps: "3 reps" },
-  { pct: 0.70, reps: "2 reps" },
-  { pct: 0.80, reps: "1 rep"  },
-  { pct: 0.90, reps: "1 rep"  },
-  { pct: 0.95, reps: "1 rep (suggested opener)" },
-];
-
-/** Plates */
-const PLATES = [
-  { color: "red",   kg: 55 },
-  { color: "blue",  kg: 20 },
-  { color: "yellow",kg: 15 },
-  { color: "green", kg: 10 },
-  { color: "white", kg: 5  },
-  { color: "black", kg: 2.5},
-  { color: "silver",kg: 1.25},
-  { color: "0.5kg", kg: 0.5},
-  { color: "0.25kg",kg: 0.25},
-].sort((a,b)=>b.kg-a.kg);
-
-/** Utilities */
-const el = (sel)=>document.querySelector(sel);
-function kgToLbs(kg){ return kg * 2.2046226218; }
-function fmtKg(kg){
-  const v = Math.round(kg*100)/100;
-  return (Number.isInteger(v) ? v.toString() : v.toFixed(2).replace(/0+$/,'').replace(/\.$/,''));
-}
-function fmtLbs(lbs){ return Math.round(lbs).toString(); }
-function roundToStep(value, step){
-  const inv = 1/step;
-  return Math.round(value*inv)/inv;
-}
-
-function loadState(){
-  try{ return JSON.parse(localStorage.getItem(MEET_KEY)) || {}; }
-  catch(e){ return {}; }
-}
-function saveState(state){ localStorage.setItem(MEET_KEY, JSON.stringify(state)); }
-
-function getLifterState(state, lifterId){
-  if(!state[lifterId]) state[lifterId] = { best:{squat:null, bench:null, deadlift:null}, override:{prev:{}, base:{}} };
-  if(!state[lifterId].best) state[lifterId].best = {squat:null, bench:null, deadlift:null};
-  if(!state[lifterId].override) state[lifterId].override = { prev:{}, base:{} };
-  if(!state[lifterId].override.prev) state[lifterId].override.prev = {};
-  if(!state[lifterId].override.base) state[lifterId].override.base = {};
-  return state[lifterId];
-}
-
-function calcTotalKg(best){
-  return (Number(best.squat)||0) + (Number(best.bench)||0) + (Number(best.deadlift)||0);
-}
-
-function pctDelta(currentKg, prevKg){
-  if(currentKg == null || currentKg === "" || Number.isNaN(Number(currentKg))) return null;
-  const cur = Number(currentKg);
-  const prev = Number(prevKg);
-  if(!prev) return null;
-  return ((cur - prev) / prev) * 100;
-}
-function deltaClass(d){
-  if(d == null) return "neutral";
-  if(d > 0.00001) return "good";
-  if(d < -0.00001) return "bad";
-  return "neutral";
-}
-function deltaText(d){
-  if(d == null) return "—";
-  const sign = d > 0 ? "+" : "";
-  return sign + d.toFixed(1) + "%";
-}
-
-function liftLabel(key){
-  if(key==="squat") return "Squat";
-  if(key==="bench") return "Bench";
-  if(key==="deadlift") return "Deadlift";
-  return key;
-}
-
-/** Seed + overrides */
-function getNumberOrNull(v){
-  if(v == null || v === "") return null;
-  const n = Number(v);
-  return Number.isFinite(n) ? n : null;
-}
-function getPrevKg(lifter, liftKey, state){
-  const seeded = lifter.prev?.[liftKey];
-  if(seeded != null && Number(seeded) > 0) return Number(seeded);
-  const ls = getLifterState(state, lifter.id);
-  const ov = getNumberOrNull(ls.override.prev[liftKey]);
-  if(ov != null && ov > 0) return ov;
-  return null;
-}
-function getBaseKg(lifter, liftKey, state){
-  const seeded = lifter.base?.[liftKey];
-  if(seeded != null && Number(seeded) > 0) return Number(seeded);
-  const ls = getLifterState(state, lifter.id);
-  const ov = getNumberOrNull(ls.override.base[liftKey]);
-  if(ov != null && ov > 0) return ov;
-  return null;
-}
-
-/** Plate breakdown (per side) */
-function plateBreakdown(targetKg, barKg){
-  const loadKg = targetKg - barKg;
-  if(loadKg < 0) return { ok:false, msg:`Target (${fmtKg(targetKg)}kg) is less than bar (${fmtKg(barKg)}kg).`, perSide:[] };
-  const perSide = loadKg / 2;
-  if(perSide < 0.00001) return { ok:true, msg:`Empty bar (${fmtKg(barKg)}kg).`, perSide:[] };
-
-  let remaining = Math.round(perSide * 100) / 100;
-  const chosen = [];
-
-  for(const p of PLATES){
-    let count = 0;
-    while(remaining + 1e-9 >= p.kg){
-      remaining = Math.round((remaining - p.kg) * 100) / 100;
-      count++;
-      if(count > 1000) break;
+    .liftHeadLeft{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
     }
-    if(count>0) chosen.push({ ...p, count });
-  }
+    .liftName{
+      font-weight:1000;
+      font-size:16px;
+    }
+    .liftSub{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
-  const ok = Math.abs(remaining) < 0.001;
-  return { ok, remainder: remaining, perSide: chosen };
-}
-function formatPlates(perSideList){
-  if(!perSideList.length) return `No plates (just the bar).`;
-  const parts = [];
-  for(const item of perSideList){
-    parts.push(`${item.count} ${item.color} (${fmtKg(item.kg)}kg)`);
-  }
-  return `Per side: ` + parts.join(" + ");
-}
-
-/** Warmup item */
-function renderWarmupItem(pct, reps, prevKg, barKg, roundStep){
-  const rawKg = prevKg * pct;
-  const kg = roundToStep(rawKg, roundStep);
-  const lbs = fmtLbs(kgToLbs(kg));
-  const pctText = Math.round(pct*100) + "%";
-
-  const bd = plateBreakdown(kg, barKg);
-  const platesLine = bd.ok
-    ? `<div class="plates"><b>Loading:</b> ${formatPlates(bd.perSide)} <small>(bar ${fmtKg(barKg)}kg)</small></div>`
-    : `<div class="plates"><b>Loading:</b> ${bd.msg}</div>`;
-
-  return `
-    <div class="wItem">
-      <div class="wLine">
-        <div class="wLeft">${pctText} • ${fmtKg(kg)}kg <span class="muted">(${lbs}lbs)</span></div>
-        <div class="wRight">${reps}</div>
-      </div>
-      ${platesLine}
-    </div>
-  `;
-}
-
-/** Lift card */
-function renderLiftCard(lifter, liftKey, state){
-  const ls = getLifterState(state, lifter.id);
-
-  const barKg = Number(el("#barWeight").value || 20);
-  const roundStep = Number(el("#roundTo").value || 0.25);
-
-  const prevKg = getPrevKg(lifter, liftKey, state);
-  const baseKg = getBaseKg(lifter, liftKey, state);
-
-  // "Current" number is their live best for tonight (editable),
-  // initially seeded from 2025 base if there is no stored entry yet.
-  const bestKg = (ls.best[liftKey] != null) ? ls.best[liftKey] : baseKg;
-
-  // Pill strings
-  const prevPill = (prevKg != null)
-    ? `2024: <b>${fmtKg(prevKg)}kg</b> <span class="muted">(${fmtLbs(kgToLbs(prevKg))}lbs)</span>`
-    : `2024: <b>Unknown</b> <span class="muted">(enter)</span>`;
-
-  const basePill = (baseKg != null)
-    ? `2025: <b>${fmtKg(baseKg)}kg</b> <span class="muted">(${fmtLbs(kgToLbs(baseKg))}lbs)</span>`
-    : `2025: <b>Unknown</b> <span class="muted">(enter)</span>`;
-
-  const warmupsHtml = (prevKg != null)
-    ? WARMUP_PLAN.map(w => renderWarmupItem(w.pct, w.reps, prevKg, barKg, roundStep)).join("")
-    : `<div class="note">Enter a 2024 number to generate warm-up suggestions.</div>`;
-
-  const d = (prevKg != null) ? pctDelta(bestKg, prevKg) : null;
-  const dCls = deltaClass(d);
-
-  return `
-    <div class="liftTop">
-      <h2>${liftLabel(liftKey)}</h2>
-      <div class="pill">${prevPill}</div>
-      <div class="pill">${basePill}</div>
-    </div>
-
-    <div class="row" style="margin-top:10px;">
-      <div style="flex:1; min-width:180px;">
-        <label>2024 best (kg) — warmups & delta baseline</label>
-        <input type="number" step="0.25" min="0" inputmode="decimal"
-          id="prev-${liftKey}" value="${prevKg ?? ""}" placeholder="e.g. 180" />
-      </div>
-
-      <div style="flex:1; min-width:180px;">
-        <label>2025 best (kg) — “come in with”</label>
-        <input type="number" step="0.25" min="0" inputmode="decimal"
-          id="base-${liftKey}" value="${baseKg ?? ""}" placeholder="e.g. 190" />
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:10px;">
-      <div style="flex:1; min-width:180px;">
-        <label>Best successful tonight (kg)</label>
-        <input type="number" step="0.25" min="0" inputmode="decimal"
-          id="best-${liftKey}" value="${bestKg ?? ""}" placeholder="e.g. 200" />
-        <div class="small" style="margin-top:6px;">
-          Change vs 2024: <span class="delta ${dCls}">${deltaText(d)}</span>
-        </div>
-      </div>
-      <div style="flex:1; min-width:180px;">
-        <label>Best tonight (lbs)</label>
-        <input type="text" id="bestlbs-${liftKey}" readonly
-          value="${bestKg ? (fmtLbs(kgToLbs(bestKg)) + " lbs") : ""}" />
-        <div class="small" style="margin-top:6px;">(Auto from kg input)</div>
-      </div>
-    </div>
-
-    <details open>
-      <summary>Warm-up suggestions (based on 2024)</summary>
-      <div class="warmups">${warmupsHtml}</div>
-      <div class="note">
-        Suggestions are % of 2024 best, rounded to ${fmtKg(roundStep)}kg. Adjust freely.
-      </div>
-    </details>
-  `;
-}
-
-/** Leaderboard */
-function renderBoard(){
-  const state = loadState();
-
-  const rows = SEED_LIFTERS.map(l => {
-    const ls = getLifterState(state, l.id);
-
-    const prevSq = getPrevKg(l, "squat", state);
-    const prevBn = getPrevKg(l, "bench", state);
-    const prevDl = getPrevKg(l, "deadlift", state);
-
-    // live best: stored overrides, else seed base
-    const curSq = (ls.best.squat != null) ? ls.best.squat : getBaseKg(l, "squat", state);
-    const curBn = (ls.best.bench != null) ? ls.best.bench : getBaseKg(l, "bench", state);
-    const curDl = (ls.best.deadlift != null) ? ls.best.deadlift : getBaseKg(l, "deadlift", state);
-
-    const totalKg = (Number(curSq)||0) + (Number(curBn)||0) + (Number(curDl)||0);
-    const totalLbs = fmtLbs(kgToLbs(totalKg));
-
-    const dSq = (prevSq != null && curSq != null) ? pctDelta(curSq, prevSq) : null;
-    const dBn = (prevBn != null && curBn != null) ? pctDelta(curBn, prevBn) : null;
-    const dDl = (prevDl != null && curDl != null) ? pctDelta(curDl, prevDl) : null;
-
-    const prevTotal = (Number(prevSq)||0) + (Number(prevBn)||0) + (Number(prevDl)||0);
-    const dTot = (prevTotal > 0 && totalKg > 0) ? pctDelta(totalKg, prevTotal) : null;
-
-    return {
-      name: l.name,
-      totalKg, totalLbs,
-      curSq, curBn, curDl,
-      dSq, dBn, dDl, dTot
-    };
-  }).sort((a,b)=>b.totalKg - a.totalKg);
-
-  const table = el("#boardTable");
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th style="width:42px;">#</th>
-        <th>Lifter</th>
-        <th>Total</th>
-        <th>Squat</th>
-        <th>Bench</th>
-        <th>Deadlift</th>
-        <th>Overall Δ</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${rows.map((r, idx)=>{
-        const fmtLift = (kg)=> (kg!=null && Number(kg)>0)
-          ? `${fmtKg(kg)}kg (${fmtLbs(kgToLbs(kg))}lbs)`
-          : "—";
-
-        const total = (r.totalKg>0)
-          ? `${r.totalLbs} lbs <span class="muted">(${fmtKg(r.totalKg)}kg)</span>`
-          : "—";
-
-        return `
-          <tr>
-            <td><b>${idx+1}</b></td>
-            <td><b>${r.name}</b></td>
-            <td>${total}</td>
-            <td>${fmtLift(r.curSq)}<div class="small">Δ <span class="delta ${deltaClass(r.dSq)}">${deltaText(r.dSq)}</span></div></td>
-            <td>${fmtLift(r.curBn)}<div class="small">Δ <span class="delta ${deltaClass(r.dBn)}">${deltaText(r.dBn)}</span></div></td>
-            <td>${fmtLift(r.curDl)}<div class="small">Δ <span class="delta ${deltaClass(r.dDl)}">${deltaText(r.dDl)}</span></div></td>
-            <td><span class="delta ${deltaClass(r.dTot)}">${deltaText(r.dTot)}</span></td>
-          </tr>
-        `;
-      }).join("")}
-    </tbody>
-  `;
-}
-
-/** App wiring */
-let currentLifterId = SEED_LIFTERS[0]?.id;
-
-function populateNames(){
-  const sel = el("#nameSelect");
-  sel.innerHTML = SEED_LIFTERS.map(l => `<option value="${l.id}">${l.name}</option>`).join("");
-  sel.value = currentLifterId;
-}
-
-function updateTotalBox(lifter, state){
-  const ls = getLifterState(state, lifter.id);
-
-  // Use stored best if present; otherwise fall back to seed base values
-  const curSq = (ls.best.squat != null) ? ls.best.squat : getBaseKg(lifter, "squat", state);
-  const curBn = (ls.best.bench != null) ? ls.best.bench : getBaseKg(lifter, "bench", state);
-  const curDl = (ls.best.deadlift != null) ? ls.best.deadlift : getBaseKg(lifter, "deadlift", state);
-
-  const totalKg = (Number(curSq)||0) + (Number(curBn)||0) + (Number(curDl)||0);
-  const totalLbs = fmtLbs(kgToLbs(totalKg));
-  el("#totalBox").textContent = `Total = ${totalLbs} lbs (${fmtKg(totalKg)}kg)`;
-}
-
-function renderMe(){
-  const state = loadState();
-  const lifter = SEED_LIFTERS.find(l=>l.id===currentLifterId) || SEED_LIFTERS[0];
-
-  el("#card-squat").innerHTML = renderLiftCard(lifter, "squat", state);
-  el("#card-bench").innerHTML = renderLiftCard(lifter, "bench", state);
-  el("#card-deadlift").innerHTML = renderLiftCard(lifter, "deadlift", state);
-
-  // Hook inputs
-  ["squat","bench","deadlift"].forEach(k=>{
-    const prevInp = el(`#prev-${k}`);
-    const baseInp = el(`#base-${k}`);
-    const bestInp = el(`#best-${k}`);
-
-    prevInp.addEventListener("input", ()=>{
-      const st = loadState();
-      const ls = getLifterState(st, lifter.id);
-      ls.override.prev[k] = (prevInp.value === "" ? null : Number(prevInp.value));
-      saveState(st);
-      renderMe(); // regen warmups & deltas
-    });
-
-    baseInp.addEventListener("input", ()=>{
-      const st = loadState();
-      const ls = getLifterState(st, lifter.id);
-      ls.override.base[k] = (baseInp.value === "" ? null : Number(baseInp.value));
-
-      // If user hasn't set a "best tonight" yet, keep it aligned with base
-      if(ls.best[k] == null){
-        ls.best[k] = (baseInp.value === "" ? null : Number(baseInp.value));
-      }
-
-      saveState(st);
-      renderMe();
-    });
-
-    bestInp.addEventListener("input", ()=>{
-      const st = loadState();
-      const ls = getLifterState(st, lifter.id);
-      ls.best[k] = (bestInp.value === "" ? null : Number(bestInp.value));
-      saveState(st);
-
-      el(`#bestlbs-${k}`).value = (bestInp.value === "" ? "" : (fmtLbs(kgToLbs(Number(bestInp.value))) + " lbs"));
-
-      updateTotalBox(lifter, st);
-      renderBoard();
-    });
-
-    // Set lbs mirrors initially
-    const initVal = bestInp.value;
-    el(`#bestlbs-${k}`).value = (initVal === "" ? "" : (fmtLbs(kgToLbs(Number(initVal))) + " lbs"));
-  });
-
-  updateTotalBox(lifter, state);
-  renderBoard();
-}
-
-function setTab(tab){
-  const me = el("#tab-me");
-  const board = el("#tab-board");
-  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab));
-  me.style.display = (tab==="me") ? "" : "none";
-  board.style.display = (tab==="board") ? "" : "none";
-  if(tab==="board") renderBoard();
-}
-
-(function init(){
-  const persisted = loadState();
-  const lastPicked = persisted.__lastPicked;
-  if(lastPicked && SEED_LIFTERS.some(l=>l.id===lastPicked)) currentLifterId = lastPicked;
-
-  populateNames();
-
-  el("#nameSelect").addEventListener("change", (e)=>{
-    currentLifterId = e.target.value;
-    const st = loadState();
-    st.__lastPicked = currentLifterId;
-    saveState(st);
-    renderMe();
-  });
-
-  ["#barWeight","#roundTo"].forEach(s=>{
-    el(s).addEventListener("input", ()=>renderMe());
-  });
-
-  document.querySelectorAll(".tabbtn").forEach(b=>{
-    b.addEventListener("click", ()=>setTab(b.dataset.tab));
-  });
-
-  el("#refreshBoard").addEventListener("click", renderBoard);
-
-  el("#resetMine").addEventListener("click", ()=>{
-    const st = loadState();
-    const ls = getLifterState(st, currentLifterId);
-    ls.best = { squat:null, bench:null, deadlift:null };
-    saveState(st);
-    renderMe();
-  });
-
-  el("#resetAll").addEventListener("click", ()=>{
-    localStorage.removeItem(MEET_KEY);
-    renderMe();
-  });
-
-  renderMe();
-})();
-</script>
-</body>
-</html>
+    .liftHeadRight{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-shrink:0;
+    }
+    .valueBadge{
+      text-align:right;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:8px 10px;
+      background:rgba(10,16,28,.6);
+      min-width:120px;
+    }
+    .valueBadge .lbs{
+      font-weight:1000;
+      font-size:16px;
+      line-height:1.05;
+    }
+    .valueBadge .kg{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .chev{
+      width:10px; height:10px;
+      border-right:2px solid var(--muted);
+      border-botto
