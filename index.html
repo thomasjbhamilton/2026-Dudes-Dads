@@ -401,6 +401,22 @@
     @media (max-width: 620px) {
       .row { flex-direction: column; }
     }
+
+    .pillDisplay{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding: 12px 12px;
+      font-size: 15px;
+      font-weight: 800;
+      min-width: 0;
+    }
+
+    .warmLbs{
+      color: var(--muted);
+      font-weight: 600; /* lighter than the main weight */
+    }
+        
   </style>
 </head>
 <body>
@@ -451,6 +467,7 @@
       <div class="row">
         <button class="btn" id="resetMine">Reset my entries</button>
         <button class="btn" id="resetAll">Reset ALL device entries</button>
+        <button class="btn" id="resetTonight">Force reset tonight (2026)</button>
       </div>
       <div class="hint">This app stores values on this device using <span class="mono">localStorage</span>.</div>
     </div>
@@ -674,7 +691,7 @@ function renderWarmups(prevKg){
     return `
       <div class="wItem">
         <div class="wTop">
-          <div class="left">${Math.round(w.pct*100)}% • ${fmtKg(kg)}kg <span class="muted">(${lbs}lbs)</span></div>
+          <div class="left">${Math.round(w.pct*100)}% • ${fmtKg(kg)}kg <span class="warmLbs">(${lbs}lbs)</span></div>
           <div class="right">${w.reps}</div>
         </div>
         <div class="plates">${plateLine}</div>
@@ -685,8 +702,7 @@ function renderWarmups(prevKg){
 
 function currentBestKg(lifter, liftKey, state){
   const ls = getLifterState(state, lifter.id);
-  // If they've set a "best tonight", use it; else fall back to seeded/base
-  return (ls.best[liftKey] != null) ? ls.best[liftKey] : getBaseKg(lifter, liftKey, state);
+  return (ls.best[liftKey] != null) ? ls.best[liftKey] : null;
 }
 
 function renderLiftDetails(lifter, liftKey, state){
@@ -717,8 +733,9 @@ function renderLiftDetails(lifter, liftKey, state){
         </div>
         <div class="field">
           <label>Tonight best (lbs)</label>
-          <input id="bestlbs-${liftKey}" type="text" readonly
-            value="${curKg ? (fmtLbs(kgToLbs(curKg)) + " lbs") : ""}" />
+          <div class="pillDisplay" id="bestlbs-${liftKey}">
+            ${curKg ? (fmtLbs(kgToLbs(curKg)) + " lbs") : "—"}
+          </div>
           <div class="hint">Auto from kg.</div>
         </div>
       </div>
@@ -760,14 +777,16 @@ function renderAccordion(){
   const card = el("#liftsCard");
 
   card.innerHTML = liftKeyOrder().map(k=>{
-    const curKg = currentBestKg(lifter, k, state);
-    const curLbs = (curKg != null) ? fmtLbs(kgToLbs(curKg)) : "—";
-    const curKgTxt = (curKg != null) ? fmtKg(curKg) : "—";
-
-    const prevKg = getPrevKg(lifter, k, state);
+    const prevKg = getPrevKg(lifter, k, state);         // last year (2025)
+    const curKg  = currentBestKg(lifter, k, state);     // tonight (2026) may be null
+    const displayKg = (curKg != null) ? curKg : prevKg; // show last year until entered
+  
+    const curLbs   = (displayKg != null) ? fmtLbs(kgToLbs(displayKg)) : "—";
+    const curKgTxt = (displayKg != null) ? fmtKg(displayKg) : "—";
+  
     const prevTxt = (prevKg != null)
-      ? `2025: ${fmtLbs(kgToLbs(prevKg))}lbs (${fmtKg(prevKg)}kg)`
-      : `2025: unknown`;
+      ? `Last year (2025): ${fmtLbs(kgToLbs(prevKg))}lbs (${fmtKg(prevKg)}kg)`
+      : `Last year (2025): unknown`;
 
     // All collapsed initially => no "open" attribute
     return `
@@ -803,8 +822,10 @@ function renderAccordion(){
       ls.best[k] = (best.value === "" ? null : Number(best.value));
       saveState(st);
 
-      el(`#bestlbs-${k}`).value = (best.value === "" ? "" : (fmtLbs(kgToLbs(Number(best.value))) + " lbs"));
-
+     const bestLbsEl = el(`#bestlbs-${k}`);
+      if(bestLbsEl){
+        bestLbsEl.textContent = (best.value === "" ? "—" : (fmtLbs(kgToLbs(Number(best.value))) + " lbs"));
+      }
       updateTotals();
       renderBoard();     // keep leaderboard current
       refreshSummaryRow(k);
@@ -1031,6 +1052,19 @@ function syncAll(){
   renderBoard();
 }
 
+function resetTonight(){
+  const st = loadState();
+
+  SEED_LIFTERS.forEach(l => {
+    const ls = getLifterState(st, l.id);
+    ls.best = { squat: null, bench: null, deadlift: null };
+  });
+
+  saveState(st);
+
+  syncAll(); // re-render everything
+}
+  
 /* Init */
 (function init(){
   // Drawer wiring
@@ -1057,8 +1091,17 @@ function syncAll(){
   });
  
   // Reset buttons
+  const resetTonightBtn = el("#resetTonight");
+  if (resetTonightBtn) {
+    resetTonightBtn.addEventListener("click", () => {
+      if (confirm("This will clear ALL tonight (2026) lift entries. Are you sure?")) {
+        resetTonight();
+      }
+    });
+  }
   el("#resetMine").addEventListener("click", resetMine);
   el("#resetAll").addEventListener("click", resetAll);
+  
 
   // Ensure there is a current lifter
   const st = loadState();
