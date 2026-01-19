@@ -533,18 +533,18 @@
    base = 2025 best (prefills tonight best initially)
    ========================= */
 const SEED_LIFTERS = [
-  { id:"thomas",  name:"Thomas",  prev:{squat:192.75, bench:138.25, deadlift:188.25}, base:{squat:201.75, bench:142.75, deadlift:206.25} },
-  { id:"mark",    name:"Mark",    prev:{squat:143.00, bench:129.25, deadlift:183.75}, base:{squat:158.75, bench:142.75, deadlift:197.25} },
-  { id:"david",   name:"David",   prev:{squat:165.50, bench:120.25, deadlift:152.00}, base:{squat:174.50, bench:122.50, deadlift:172.25} },
-  { id:"sean",    name:"Sean",    prev:{squat:165.50, bench:129.25, deadlift:156.50}, base:{squat:183.75, bench:136.25, deadlift:183.75} },
-  { id:"athneil", name:"Athneil", prev:{squat:113.50, bench: 79.50, deadlift:143.00}, base:{squat:129.25, bench: 90.75, deadlift:161.00} },
-  { id:"neil",    name:"Neil",    prev:{squat:129.25, bench:133.75, deadlift:152.00}, base:{squat:147.50, bench:124.75, deadlift:172.25} },
-  { id:"dani",    name:"Dani",    prev:{squat:127.00, bench:122.50, deadlift:147.50}, base:{squat:170.00, bench:142.75, deadlift:206.25} },
-  { id:"michael", name:"Michael", prev:{squat:124.75, bench:124.75, deadlift:183.75}, base:{squat:124.75, bench:115.75, deadlift:192.75} },
+  { id:"thomas",  name:"Thomas",  prev:{squat:201.75, bench:142.75, deadlift:206.25}, base:{squat:201.75, bench:142.75, deadlift:206.25} }, // 445/315/455
+  { id:"mark",    name:"Mark",    prev:{squat:158.75, bench:142.75, deadlift:197.25}, base:{squat:158.75, bench:142.75, deadlift:197.25} }, // 350/315/435
+  { id:"david",   name:"David",   prev:{squat:174.50, bench:122.50, deadlift:172.25}, base:{squat:174.50, bench:122.50, deadlift:172.25} }, // 385/270/380
+  { id:"sean",    name:"Sean",    prev:{squat:183.75, bench:136.25, deadlift:183.75}, base:{squat:183.75, bench:136.25, deadlift:183.75} }, // 405/300/405
+  { id:"athneil", name:"Athneil", prev:{squat:129.25, bench: 90.75, deadlift:161.00}, base:{squat:129.25, bench: 90.75, deadlift:161.00} }, // 285/200/355
+  { id:"neil",    name:"Neil",    prev:{squat:147.50, bench:124.75, deadlift:172.25}, base:{squat:147.50, bench:124.75, deadlift:172.25} }, // 325/275/380
+  { id:"dani",    name:"Dani",    prev:{squat:170.00, bench:142.75, deadlift:206.25}, base:{squat:170.00, bench:142.75, deadlift:206.25} }, // 375/315/455
+  { id:"michael", name:"Michael", prev:{squat:124.75, bench:115.75, deadlift:192.75}, base:{squat:124.75, bench:115.75, deadlift:192.75} }, // 275/255/425
+
   { id:"rob",     name:"Rob",     prev:{squat:null, bench:null, deadlift:null},       base:{squat:null, bench:null, deadlift:null} },
   { id:"isaias",  name:"Isaias",  prev:{squat:null, bench:null, deadlift:null},       base:{squat:null, bench:null, deadlift:null} },
 ];
-
 const MEET_KEY = "dudes_dad_meet_v3";
 const WARMUP_ROUND_KG = 2.5; // hard rule: warmups always loadable
 /* Warmups: based on 2024 */
