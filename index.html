@@ -680,26 +680,24 @@ function currentBestKg(lifter, liftKey, state){
 }
 
 function renderLiftDetails(lifter, liftKey, state){
-  const prevKg = getPrevKg(lifter, liftKey, state);     // last year number
-  const curKg  = currentBestKg(lifter, liftKey, state); // tonight number
-  const warmupsBlock = prevKg != null ? renderWarmups(prevKg) : ...
-  const d = (prevKg != null && curKg != null) ? pctDelta(curKg, prevKg) : null;
+  const prevKg = getPrevKg(lifter, liftKey, state);     // last year (2025) baseline
+  const curKg  = currentBestKg(lifter, liftKey, state); // tonight (2026)
 
   const prevLine = (prevKg != null)
-    ? `2025 best: <b>${fmtLbs(kgToLbs(prevKg))}lbs</b> <span class="muted">(${fmtKg(prevKg)}kg)</span>`
-    : `2025 best: <b>Unknown</b> <span class="muted">(enter below for warmups)</span>`;
+    ? `Last year (2025) best: <b>${fmtLbs(kgToLbs(prevKg))}lbs</b> <span class="muted">(${fmtKg(prevKg)}kg)</span>`
+    : `Last year (2025) best: <b>Unknown</b> <span class="muted">(enter below for warmups)</span>`;
 
   const d = (prevKg != null && curKg != null) ? pctDelta(curKg, prevKg) : null;
 
   const warmupsBlock = (prevKg != null)
     ? `<div class="warmups">${renderWarmups(prevKg)}</div>`
-    : `<div class="warmups"><div class="wItem"><div class="muted">Enter a 2024 best to generate warmups.</div></div></div>`;
+    : `<div class="warmups"><div class="wItem"><div class="muted">Enter last year (2025) best to generate warmups.</div></div></div>`;
 
   return `
     <div class="lift-body">
       <div class="row">
         <div class="field">
-          <label>Tonight best (kg)</label>
+          <label>Tonight best (2026) (kg)</label>
           <input class="primaryInput" id="best-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal"
             value="${curKg ?? ""}" placeholder="e.g. 180" />
           <div class="inline" style="margin-top:8px;">
@@ -709,34 +707,32 @@ function renderLiftDetails(lifter, liftKey, state){
         </div>
         <div class="field">
           <label>Tonight best (lbs)</label>
-          <input id="bestlbs-${liftKey}" type="text" readonly value="${curKg ? (fmtLbs(kgToLbs(curKg)) + " lbs") : ""}" />
+          <input id="bestlbs-${liftKey}" type="text" readonly
+            value="${curKg ? (fmtLbs(kgToLbs(curKg)) + " lbs") : ""}" />
           <div class="hint">Auto from kg.</div>
         </div>
       </div>
 
       <div>
-        <label>Suggested warmups (based on 2025)</label>
+        <label>Suggested warmups (based on last year / 2025)</label>
         ${warmupsBlock}
       </div>
 
       <details class="card" style="padding:10px; border-radius:14px; box-shadow:none;">
         <summary class="lift-summary" style="padding:0; align-items:center;">
           <div class="lift-left">
-            <div class="lift-title" style="font-size:13px;">Edit 2025 numbers</div>
-            <div class="lift-sub">Only use this if the seeded numbers are wrong / missing.</div>
+            <div class="lift-title" style="font-size:13px;">Edit last year (2025) number</div>
+            <div class="lift-sub">Only use this if the seeded number is wrong / missing.</div>
           </div>
           <div class="chev" aria-hidden="true"></div>
         </summary>
         <div class="lift-body" style="padding:12px 0 0;">
           <div class="row">
             <div class="field">
-              <label>2025 best (kg)</label>
-              <input id="prev-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal" value="${prevKg ?? ""}" placeholder="e.g. 170" />
-            </div>
-            <div class="field">
-              <label>2025 best (kg) — starting point</label>
-              <input id="base-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal" value="${baseKg ?? ""}" placeholder="e.g. 180" />
-              <div class="hint">Used only to prefill tonight best if you haven’t entered one yet.</div>
+              <label>Last year (2025) best (kg)</label>
+              <input id="prev-${liftKey}" type="number" step="0.25" min="0" inputmode="decimal"
+                value="${prevKg ?? ""}" placeholder="e.g. 170" />
+              <div class="hint">This drives warmups + Δ%.</div>
             </div>
           </div>
         </div>
