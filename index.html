@@ -852,16 +852,16 @@ function refreshSummaryRow(liftKey){
 
 /* Totals */
 function calcTotalKgFor(lifter, state){
-  const ls = getLifterState(state, lifter.id);
   const s = currentBestKg(lifter, "squat", state);
   const b = currentBestKg(lifter, "bench", state);
   const d = currentBestKg(lifter, "deadlift", state);
-  return (Number(s)||0) + (Number(b)||0) + (Number(d)||0);
+  return (Number(s) || 0) + (Number(b) || 0) + (Number(d) || 0);
 }
 function updateTotals(){
   const st = loadState();
   const lifter = getCurrentLifter();
   const totalKg = calcTotalKgFor(lifter, st);
+
   el("#whoLine").textContent = `${lifter.name} — Current total`;
   el("#totalLbs").textContent = `${fmtLbs(kgToLbs(totalKg))} lbs`;
   el("#totalKg").textContent = `(${fmtKg(totalKg)} kg)`;
