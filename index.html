@@ -391,6 +391,16 @@
     .pick .left{display:flex; align-items:center; gap:10px; min-width:0}
     .pick .nm{font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .pick .sub{font-size:12px; color:var(--muted)}
+
+    /* --- Responsive fixes --- */
+    .row { align-items: stretch; }
+    .field { min-width: 0; }          /* key: prevents overflow inside flex/grid */
+     input, select { min-width: 0; }   /* key on iOS */
+    
+    /* Stack fields on mobile */
+    @media (max-width: 620px) {
+      .row { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
@@ -740,6 +750,9 @@ function renderLiftDetails(lifter, liftKey, state){
     </div>
   `;
 }
+
+
+  
 
 function renderAccordion(){
   const state = loadState();
